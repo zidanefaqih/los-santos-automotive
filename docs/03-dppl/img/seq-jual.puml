@@ -1,0 +1,25 @@
+@startuml
+skinparam shadowing false
+actor "User (Penjual)" as P
+participant "Browser" as UI
+participant "MobilController" as C
+participant "Mobil (Model)" as M
+database PostgreSQL as DB
+actor Admin
+
+P -> UI : isi form iklan + upload foto
+UI -> C : POST /jual
+C -> C : validasi input & file
+alt tidak valid
+  C --> UI : pesan error
+else valid
+  C -> M : pasangIklan(data, status="pending")
+  M -> DB : INSERT INTO mobil
+  C --> UI : "iklan menunggu verifikasi"
+end
+
+Admin -> C : POST /admin/iklan/:id/setujui
+C -> M : updateStatus(id, "disetujui")
+M -> DB : UPDATE mobil SET status_verifikasi
+C --> Admin : iklan tampil di katalog
+@enduml

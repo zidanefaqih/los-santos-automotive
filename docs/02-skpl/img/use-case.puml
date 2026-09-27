@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Pengunjung / User" as U
+actor "Admin" as A
+
+rectangle "Los Santos Automotive" {
+  (SK-01 Daftar Akun) as UC1
+  (SK-02 Login / Logout) as UC2
+  (SK-03 Lihat Katalog Mobil) as UC3
+  (SK-04 Cari & Filter Mobil) as UC4
+  (SK-05 Lihat Detail Mobil) as UC5
+  (SK-06 Kelola Keranjang) as UC6
+  (SK-07 Checkout) as UC7
+  (SK-08 Pembayaran Simulasi) as UC8
+  (SK-09 Lihat & Cetak Struk) as UC9
+  (SK-10 Pasang Iklan Mobil) as UC10
+  (SK-11 Kelola Iklan Saya) as UC11
+  (SK-12 Lihat Pesanan Masuk) as UC12
+  (SK-13 Kelola Profil) as UC13
+  (SK-14 Verifikasi Iklan) as UC14
+  (SK-15 Kelola User) as UC15
+}
+
+U --> UC1
+U --> UC2
+U --> UC3
+U --> UC4
+U --> UC5
+U --> UC6
+U --> UC7
+U --> UC8
+U --> UC9
+U --> UC10
+U --> UC11
+U --> UC12
+U --> UC13
+A --> UC2
+A --> UC14
+A --> UC15
+@enduml

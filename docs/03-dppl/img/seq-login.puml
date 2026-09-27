@@ -1,0 +1,22 @@
+@startuml
+skinparam shadowing false
+actor User
+participant "Browser" as UI
+participant "AuthController" as C
+participant "User (Model)" as U
+database PostgreSQL as DB
+
+User -> UI : isi email & password
+UI -> C : POST /login
+C -> U : findByEmail(email)
+U -> DB : SELECT * FROM user WHERE email = ?
+DB --> U : data user / null
+alt email tidak ditemukan
+  C --> UI : pesan error
+else password tidak cocok (bcrypt)
+  C --> UI : pesan error
+else cocok
+  C -> C : simpan session login
+  C --> UI : redirect / atau /admin
+end
+@enduml

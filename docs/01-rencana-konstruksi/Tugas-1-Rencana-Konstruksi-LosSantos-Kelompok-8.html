@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8">
+<title>TUGAS #1 — PERENCANAAN KONSTRUKSI PERANGKAT LUNAK</title><style>
+@page{size:A4 landscape;margin:1cm}
+body{font-family:Segoe UI,Arial,sans-serif;font-size:11px}
+h1{font-size:16px;text-align:center;margin:0 0 4px}
+.sub{text-align:center;margin:1px 0}
+h2{font-size:13px;margin:14px 0 4px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #000;padding:2px 4px;text-align:center}
+td.act{text-align:left}
+th{background:#eee}
+</style></head><body>
+<h1>TUGAS #1 — PERENCANAAN KONSTRUKSI PERANGKAT LUNAK</h1>
+<p class="sub">Mata Kuliah: Implementasi dan Pengujian Perangkat Lunak (CAK3BAB3)</p>
+<p class="sub">Kelompok 8 — TUBES: Los Santos Automotive (Marketplace Jual-Beli Mobil)</p>
+<p class="sub">Anggota: 1. Fikri Ahmad Zidane (2211102336)   2. Ananda Tegar Pratama Saulaka (2211102356)</p>
+<h2>a. Pemilihan Tool</h2><ul>
+<li><b>DBMS</b>: PostgreSQL 16 (berjalan di Docker)</li>
+<li><b>Bahasa Pemrograman</b>: JavaScript — Node.js + Express</li>
+<li><b>UI / IMK</b>: EJS + Bootstrap 5 (mockup: Figma / draw.io)</li>
+<li><b>ORM</b>: Prisma</li>
+<li><b>Version Control</b>: GitHub</li>
+<li><b>Manajemen Tugas</b>: Trello</li>
+<li><b>Editor &amp; Testing</b>: VS Code, Jest</li>
+</ul><h2>b. Rencana Konstruksi Software (mirip Slide #7)</h2><table><tr>
+<th>No</th>
+<th>Aktivitas</th>
+<th>M3</th>
+<th>M4</th>
+<th>M5</th>
+<th>M6</th>
+<th>M7</th>
+<th>M9</th>
+<th>M10</th>
+<th>M11</th>
+<th>M12</th>
+<th>M13</th>
+<th>M14</th>
+<th>M15</th>
+<th>PIC</th>
+<th>Status</th>
+</tr>
+<tr style="font-weight:bold"><td>1</td><td class="act">Create DATABASE</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td><td></td></tr>
+<tr><td>1a</td><td class="act">Pilih DBMS: PostgreSQL (via Docker)</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Selesai</td></tr>
+<tr><td>1b</td><td class="act">Rancang ERD &amp; skema tabel</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>1c</td><td class="act">Normalisasi &amp; migrasi tabel (Prisma)</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>1d</td><td class="act">Entry data contoh (user, mobil)</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr style="font-weight:bold"><td>2</td><td class="act">Create User Interface (IMK)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td><td></td></tr>
+<tr><td>2a</td><td class="act">Pilih UI tool: EJS + Bootstrap 5</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Selesai</td></tr>
+<tr><td>2b</td><td class="act">Mockup halaman (Figma/draw.io)</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>2c</td><td class="act">Halaman auth: login &amp; register</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>2d</td><td class="act">Beranda + katalog mobil + filter</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>2e</td><td class="act">Halaman detail mobil + foto</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>2f</td><td class="act">Halaman keranjang</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>2g</td><td class="act">Halaman checkout &amp; pembayaran</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>2h</td><td class="act">Halaman struk/invoice + cetak</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>2i</td><td class="act">Halaman penjual (jual &amp; kelola iklan)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>2j</td><td class="act">Halaman admin (verifikasi &amp; kelola user)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr style="font-weight:bold"><td>3</td><td class="act">Create CODEs</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td><td></td></tr>
+<tr><td>3a</td><td class="act">Pilih bahasa: JavaScript + Node.js + Express</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Selesai</td></tr>
+<tr><td>3b</td><td class="act">Setup repo GitHub + Docker Compose</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3c</td><td class="act">Model &amp; koneksi DB (Prisma)</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3d</td><td class="act">Routing &amp; controller (auth, mobil)</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3e</td><td class="act">CRUD iklan + upload foto</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>3f</td><td class="act">Logika keranjang &amp; total harga</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3g</td><td class="act">Simulasi bayar &amp; hitung kembalian</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3h</td><td class="act">Cetak struk (print/PDF)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>3i</td><td class="act">Defensive coding &amp; validasi input</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri &amp; Ananda</td><td>Rencana</td></tr>
+<tr><td>3j</td><td class="act">Code review &amp; refactoring</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri &amp; Ananda</td><td>Rencana</td></tr>
+<tr style="font-weight:bold"><td>4</td><td class="act">Testing &amp; Dokumentasi</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td><td></td></tr>
+<tr><td>4a</td><td class="act">Code standard &amp; User Manual</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Ananda</td><td>Rencana</td></tr>
+<tr><td>4b</td><td class="act">Unit testing (Jest) modul inti</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Fikri</td><td>Rencana</td></tr>
+<tr><td>4c</td><td class="act">DUPL &amp; pengujian integrasi</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>Fikri &amp; Ananda</td><td>Rencana</td></tr>
+<tr><td>4d</td><td class="act">OO Metric</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td>Fikri &amp; Ananda</td><td>Rencana</td></tr>
+<tr><td>4e</td><td class="act">Presentasi TUBES</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>Fikri &amp; Ananda</td><td>Rencana</td></tr>
+</table><p><i>Catatan: M8 = UTS. M15 = presentasi TUBES. Kolom minggu mengikuti minggu perkuliahan (M3 = 28 Sep 2026).</i></p></body></html>

@@ -1,0 +1,49 @@
+erDiagram
+    USER ||--o{ MOBIL : "menjual"
+    USER ||--o{ KERANJANG : "memiliki"
+    USER ||--o{ TRANSAKSI : "melakukan"
+    MOBIL ||--o{ KERANJANG : "dipilih"
+    TRANSAKSI ||--|{ DETAIL_TRANSAKSI : "berisi"
+    MOBIL ||--o{ DETAIL_TRANSAKSI : "tercatat"
+
+    USER {
+        int id_user PK
+        string nama
+        string email
+        string password
+        string role
+    }
+    MOBIL {
+        int id_mobil PK
+        string kode_mobil
+        string merek
+        string model
+        int tahun
+        decimal harga
+        string deskripsi
+        string foto
+        string status_verifikasi
+        int id_penjual FK
+    }
+    KERANJANG {
+        int id_keranjang PK
+        int id_user FK
+        int id_mobil FK
+        int qty
+    }
+    TRANSAKSI {
+        int id_transaksi PK
+        int id_user FK
+        date tanggal
+        decimal total
+        decimal uang_bayar
+        decimal kembalian
+    }
+    DETAIL_TRANSAKSI {
+        int id_detail PK
+        int id_transaksi FK
+        int id_mobil FK
+        int qty
+        decimal harga_satuan
+        decimal subtotal
+    }

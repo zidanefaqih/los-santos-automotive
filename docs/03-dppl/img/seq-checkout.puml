@@ -1,0 +1,33 @@
+@startuml
+skinparam shadowing false
+actor User
+participant "Browser (EJS)" as UI
+participant "Route /checkout" as R
+participant "CheckoutController" as C
+participant "Keranjang (Model)" as K
+participant "Transaksi (Model)" as T
+database PostgreSQL as DB
+
+User -> UI : klik Checkout
+UI -> R : GET /checkout
+R -> C : index()
+C -> K : findByUser(userId)
+K -> DB : SELECT keranjang JOIN mobil
+DB --> K : daftar item
+K --> C : items + total
+C --> UI : render checkout.ejs(items, total)
+
+User -> UI : isi uang bayar, klik Bayar
+UI -> R : POST /checkout/bayar
+R -> C : bayar(uangBayar)
+C -> C : validasi uangBayar >= total
+alt uang bayar kurang
+  C --> UI : pesan error
+else valid
+  C -> T : buatTransaksi(user, total, uangBayar)
+  T -> DB : INSERT transaksi + detail
+  DB --> T : id_transaksi
+  C -> K : clear(userId)
+  C --> UI : redirect /struk/:id
+end
+@enduml

@@ -1,0 +1,107 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class User {
+  +id_user : int
+  +nama : string
+  +email : string
+  +password : string
+  +role : string
+  +register() : void
+  +login() : bool
+  +logout() : void
+  +updateProfil() : void
+}
+
+class Mobil {
+  +id_mobil : int
+  +kode_mobil : string
+  +merek : string
+  +model : string
+  +tahun : int
+  +harga : decimal
+  +deskripsi : string
+  +foto : string
+  +status_verifikasi : string
+  +id_penjual : int
+  +pasangIklan() : void
+  +ubahIklan() : void
+  +hapusIklan() : void
+}
+
+class Keranjang {
+  +id_keranjang : int
+  +id_user : int
+  +id_mobil : int
+  +qty : int
+  +tambahItem() : void
+  +hapusItem() : void
+  +hitungTotal() : decimal
+}
+
+class Transaksi {
+  +id_transaksi : int
+  +id_user : int
+  +tanggal : datetime
+  +total : decimal
+  +uang_bayar : decimal
+  +kembalian : decimal
+  +buatTransaksi() : void
+  +hitungKembalian() : decimal
+  +cetakStruk() : void
+}
+
+class DetailTransaksi {
+  +id_detail : int
+  +id_transaksi : int
+  +id_mobil : int
+  +qty : int
+  +harga_satuan : decimal
+  +subtotal : decimal
+}
+
+class AuthController {
+  +daftar() : void
+  +login() : void
+  +logout() : void
+}
+
+class MobilController {
+  +katalog() : void
+  +detail() : void
+  +pasangIklan() : void
+  +kelolaIklan() : void
+}
+
+class KeranjangController {
+  +tambah() : void
+  +lihat() : void
+  +hapus() : void
+}
+
+class CheckoutController {
+  +index() : void
+  +bayar() : void
+  +struk() : void
+}
+
+class AdminController {
+  +verifikasi() : void
+  +kelolaUser() : void
+}
+
+User "1" -- "0..*" Mobil : menjual >
+User "1" -- "0..*" Keranjang : memiliki >
+Mobil "1" -- "0..*" Keranjang : dipilih >
+User "1" -- "0..*" Transaksi : melakukan >
+Transaksi "1" -- "1..*" DetailTransaksi : berisi >
+Mobil "1" -- "0..*" DetailTransaksi : tercatat >
+
+AuthController ..> User : << use >>
+MobilController ..> Mobil : << use >>
+KeranjangController ..> Keranjang : << use >>
+CheckoutController ..> Transaksi : << create >>
+CheckoutController ..> Keranjang : << read >>
+AdminController ..> Mobil : << verify >>
+@enduml

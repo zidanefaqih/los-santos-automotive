@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<title>SKPL — Los Santos Automotive</title>
+<style>
+@page { size: A4 portrait; margin: 2cm; }
+body { font-family: Segoe UI, Arial, sans-serif; line-height: 1.5; color:#1a1a1a; max-width: 800px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 22px; border-bottom: 3px solid #222; padding-bottom: 6px; }
+h2 { font-size: 17px; margin-top: 28px; border-bottom: 1px solid #999; padding-bottom: 3px; }
+h3 { font-size: 14px; margin-top: 18px; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
+th, td { border: 1px solid #444; padding: 4px 6px; text-align: left; vertical-align: top; }
+th { background: #eee; }
+img { max-width: 100%; border: 1px solid #ddd; margin: 8px 0; }
+code { background: #f2f2f2; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+blockquote { border-left: 4px solid #bbb; margin-left: 0; padding-left: 12px; color: #444; }
+hr { border: none; border-top: 1px solid #ccc; margin: 18px 0; }
+</style></head><body>
+<h1>SKPL — Los Santos Automotive</h1>
+<p><strong>Spesifikasi Kebutuhan Perangkat Lunak</strong> Versi 1.0 (draft) · 26 September 2026</p>
+<p><strong>Mata Kuliah:</strong> Implementasi dan Pengujian Perangkat Lunak (CAK3BAB3) <strong>Kelompok 8:</strong> Fikri Ahmad Zidane (2211102336) · Ananda Tegar Pratama Saulaka (2211102356) <strong>TUBES:</strong> Los Santos Automotive — marketplace jual-beli mobil berbasis web</p>
+<hr>
+<h2>1. Pendahuluan</h2>
+<h3>1.1 Tujuan Dokumen</h3>
+<p>Dokumen ini mendefinisikan kebutuhan perangkat lunak untuk aplikasi <strong>Los Santos Automotive</strong>, yaitu aplikasi web marketplace jual-beli mobil. Dokumen ini menjadi acuan tim dalam tahap perancangan (DPPL), implementasi, dan pengujian perangkat lunak, serta menjadi dasar penilaian kesesuaian hasil implementasi terhadap kebutuhan.</p>
+<h3>1.2 Ruang Lingkup</h3>
+<ul><li><strong>Nama produk:</strong> Los Santos Automotive</li><li><strong>Jenis:</strong> aplikasi web (berjalan di browser, server lokal via Docker)</li><li><strong>Pengguna:</strong> pembeli, penjual (satu akun pengguna dapat berperan keduanya), dan admin</li><li><strong>Fitur inti:</strong> katalog mobil, pencarian &amp; filter, keranjang, checkout, pembayaran simulasi (hitung kembalian), struk/invoice, pengelolaan iklan mobil, verifikasi iklan oleh admin</li><li><strong>Di luar ruang lingkup:</strong> pembayaran asli (payment gateway), pengiriman kendaraan, chat realtime, aplikasi mobile native</li></ul>
+<h3>1.3 Definisi, Akronim, dan Singkatan</h3>
+<table>
+<tr><th>Istilah</th><th>Arti</th></tr>
+<tr><td>SKPL</td><td>Spesifikasi Kebutuhan Perangkat Lunak (dokumen ini)</td></tr>
+<tr><td>DPPL</td><td>Deskripsi Perancangan Perangkat Lunak</td></tr>
+<tr><td>ERD</td><td>Entity Relationship Diagram</td></tr>
+<tr><td>POS</td><td>Point of Sale (fitur transaksi: barang, jumlah, bayar, struk)</td></tr>
+<tr><td>User</td><td>Pengguna terdaftar yang dapat membeli dan menjual mobil</td></tr>
+<tr><td>Admin</td><td>Pengguna dengan hak akses pengelolaan iklan dan user</td></tr>
+<tr><td>Struk</td><td>Bukti transaksi pembelian yang dapat dicetak/diunduh</td></tr>
+</table>
+<h3>1.4 Referensi</h3>
+<ol><li>RPS Mata Kuliah Implementasi dan Pengujian Perangkat Lunak (CAK3AAB3), Program Studi Informatika — Telkom University</li><li>Materi kuliah &quot;Software Construction Planning&quot; (minggu 1)</li><li>Pressman, R. S. — <em>Software Engineering: A Practitioner&#x27;s Approach</em></li><li>Repositori kelompok: GitHub (organisasi kelompok 8) dan papan pemantauan Trello &quot;Los Santos Automotive&quot;</li></ol>
+<hr>
+<h2>2. Deskripsi Umum</h2>
+<h3>2.1 Perspektif Produk</h3>
+<p>Los Santos Automotive adalah produk mandiri (stand-alone) berbasis web yang dikembangkan sebagai kelanjutan topik tugas besar dari mata kuliah sebelumnya. Aplikasi dibangun dengan arsitektur client-server: antarmuka web (browser) berkomunikasi dengan server aplikasi yang terhubung ke basis data PostgreSQL. Pengguna mengakses satu kesatuan sistem; pemisahan hak akses dilakukan melalui peran (role) pada akun.</p>
+<h3>2.2 Ringkasan Fungsi Produk</h3>
+<table>
+<tr><th>Kode</th><th>Fungsi</th><th>Deskripsi Singkat</th></tr>
+<tr><td>SK-01</td><td>Registrasi akun</td><td>Pengguna baru membuat akun (nama, email, password)</td></tr>
+<tr><td>SK-02</td><td>Login &amp; logout</td><td>Autentikasi pengguna dan admin</td></tr>
+<tr><td>SK-03</td><td>Katalog mobil</td><td>Menampilkan daftar mobil yang telah terverifikasi</td></tr>
+<tr><td>SK-04</td><td>Pencarian &amp; filter</td><td>Mencari mobil berdasarkan merek, rentang harga, dan tahun</td></tr>
+<tr><td>SK-05</td><td>Detail mobil</td><td>Menampilkan spesifikasi lengkap dan foto mobil</td></tr>
+<tr><td>SK-06</td><td>Keranjang</td><td>Menambah, melihat, dan menghapus mobil dari keranjang</td></tr>
+<tr><td>SK-07</td><td>Checkout</td><td>Menghitung total pembayaran dari isi keranjang</td></tr>
+<tr><td>SK-08</td><td>Pembayaran simulasi</td><td>Input uang bayar, menghitung kembalian</td></tr>
+<tr><td>SK-09</td><td>Struk</td><td>Menampilkan dan mencetak bukti transaksi</td></tr>
+<tr><td>SK-10</td><td>Pasang iklan mobil</td><td>Penjual mengunggah data mobil yang akan dijual</td></tr>
+<tr><td>SK-11</td><td>Kelola iklan</td><td>Penjual mengubah/menghapus iklan miliknya</td></tr>
+<tr><td>SK-12</td><td>Pesanan masuk</td><td>Penjual melihat daftar pesanan atas mobilnya</td></tr>
+<tr><td>SK-13</td><td>Kelola profil</td><td>Pengguna mengubah data profil</td></tr>
+<tr><td>SK-14</td><td>Verifikasi iklan</td><td>Admin menyetujui/menolak iklan yang masuk</td></tr>
+<tr><td>SK-15</td><td>Kelola user</td><td>Admin melihat dan menghapus user</td></tr>
+</table>
+<h3>2.3 Karakteristik Pengguna</h3>
+<table>
+<tr><th>Aktor</th><th>Karakteristik</th><th>Hak Akses Utama</th></tr>
+<tr><td>User (pembeli/penjual)</td><td>Masyarakat umum, terbiasa menggunakan browser</td><td>Cari &amp; beli mobil, pasang iklan, kelola profil</td></tr>
+<tr><td>Admin</td><td>Operator sistem</td><td>Verifikasi iklan, kelola user</td></tr>
+</table>
+<h3>2.4 Batasan Umum</h3>
+<ol><li>Berbasis web; dijalankan pada browser modern (Chrome/Firefox/Brave).</li><li>Teknologi: Node.js + Express, PostgreSQL, Prisma ORM, EJS + Bootstrap 5.</li><li>Server lokal dijalankan dengan Docker Compose.</li><li>Pembayaran hanya berupa simulasi (tidak terhubung payment gateway).</li><li>Antarmuka berbahasa Indonesia.</li></ol>
+<h3>2.5 Asumsi dan Ketergantungan</h3>
+<ol><li>Data mobil diisi oleh penjual; iklan baru tampil setelah diverifikasi admin.</li><li>Setiap transaksi hanya dapat dilakukan oleh user yang sudah login.</li><li>Aplikasi diasumsikan diakses satu pengguna per sesi (single session per browser).</li><li>Data contoh (seed) disediakan untuk keperluan demonstrasi.</li></ol>
+<hr>
+<h2>3. Kebutuhan Fungsional</h2>
+<table>
+<tr><th>Kode</th><th>Nama Kebutuhan</th><th>Deskripsi</th><th>Aktor</th><th>Prioritas</th></tr>
+<tr><td>SK-01</td><td>Registrasi akun</td><td>Sistem menyediakan form pendaftaran; email harus unik; password disimpan dalam bentuk hash</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-02</td><td>Login &amp; logout</td><td>Sistem memverifikasi email dan password, membuat sesi login, dan menyediakan logout</td><td>User, Admin</td><td>Tinggi</td></tr>
+<tr><td>SK-03</td><td>Katalog mobil</td><td>Sistem menampilkan daftar mobil berstatus terverifikasi beserta harga dan foto utama</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-04</td><td>Pencarian &amp; filter</td><td>Sistem memfilter daftar mobil berdasarkan kata kunci merek/model, rentang harga, dan tahun</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-05</td><td>Detail mobil</td><td>Sistem menampilkan detail: kode mobil, merek, model, tahun, harga, deskripsi, dan foto</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-06</td><td>Keranjang</td><td>Sistem menyimpan mobil yang dipilih user; user dapat melihat, menambah jumlah, dan menghapus item</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-07</td><td>Checkout</td><td>Sistem menampilkan ringkasan keranjang dan menghitung total harga seluruh item</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-08</td><td>Pembayaran simulasi</td><td>User memasukkan jumlah uang bayar; sistem menghitung dan menampilkan kembalian</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-09</td><td>Struk</td><td>Sistem menampilkan struk transaksi dan menyediakan fitur cetak (print/PDF)</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-10</td><td>Pasang iklan</td><td>Penjual mengisi form iklan: kode mobil, merek, model, tahun, harga, deskripsi, dan foto; status awal &quot;menunggu verifikasi&quot;</td><td>User</td><td>Tinggi</td></tr>
+<tr><td>SK-11</td><td>Kelola iklan</td><td>Penjual dapat mengubah dan menghapus iklan miliknya</td><td>User</td><td>Sedang</td></tr>
+<tr><td>SK-12</td><td>Pesanan masuk</td><td>Penjual melihat daftar transaksi yang memuat mobilnya</td><td>User</td><td>Sedang</td></tr>
+<tr><td>SK-13</td><td>Kelola profil</td><td>User mengubah nama, email, dan password akunnya</td><td>User</td><td>Sedang</td></tr>
+<tr><td>SK-14</td><td>Verifikasi iklan</td><td>Admin melihat daftar iklan berstatus menunggu dan dapat menyetujui atau menolak</td><td>Admin</td><td>Tinggi</td></tr>
+<tr><td>SK-15</td><td>Kelola user</td><td>Admin melihat daftar user dan dapat menghapus user</td><td>Admin</td><td>Rendah</td></tr>
+</table>
+<hr>
+<h2>4. Kebutuhan Non-Fungsional</h2>
+<table>
+<tr><th>Kode</th><th>Kategori</th><th>Deskripsi</th></tr>
+<tr><td>NFR-01</td><td>Performa</td><td>Halaman utama tampil dalam waktu kurang dari 3 detik pada jaringan lokal</td></tr>
+<tr><td>NFR-02</td><td>Keamanan</td><td>Password disimpan ter-hash; halaman user/admin dilindungi sesi login; akses admin dipisahkan berdasarkan peran; input divalidasi di server</td></tr>
+<tr><td>NFR-03</td><td>Usability</td><td>Tampilan responsif (mobile-first) menggunakan Bootstrap; teks berbahasa Indonesia; navigasi maksimal 3 klik menuju transaksi</td></tr>
+<tr><td>NFR-04</td><td>Ketersediaan</td><td>Aplikasi berjalan stabil pada lingkungan Docker Compose (app + database)</td></tr>
+<tr><td>NFR-05</td><td>Maintainability</td><td>Struktur kode mengikuti pola MVC (routes, controllers, views); penamaan konsisten; komentar pada bagian penting</td></tr>
+<tr><td>NFR-06</td><td>Portabilitas</td><td>Dapat dijalankan di Linux/Windows selama Docker tersedia</td></tr>
+</table>
+<hr>
+<h2>5. Kebutuhan Antarmuka Eksternal</h2>
+<h3>5.1 Antarmuka Pengguna (Halaman &amp; Rute)</h3>
+<table>
+<tr><th>Rute</th><th>Halaman</th><th>Akses</th></tr>
+<tr><td>/</td><td>Beranda (katalog unggulan)</td><td>Publik</td></tr>
+<tr><td>/mobil</td><td>Katalog mobil + pencarian &amp; filter</td><td>Publik</td></tr>
+<tr><td>/mobil/:id</td><td>Detail mobil</td><td>Publik</td></tr>
+<tr><td>/register, /login</td><td>Registrasi dan login</td><td>Publik</td></tr>
+<tr><td>/profile</td><td>Profil user</td><td>User</td></tr>
+<tr><td>/keranjang</td><td>Keranjang</td><td>User</td></tr>
+<tr><td>/checkout</td><td>Checkout &amp; pembayaran</td><td>User</td></tr>
+<tr><td>/struk/:id</td><td>Struk/invoice</td><td>User</td></tr>
+<tr><td>/jual, /jual/kelola</td><td>Pasang iklan &amp; kelola iklan</td><td>User</td></tr>
+<tr><td>/pesanan</td><td>Pesanan masuk</td><td>User</td></tr>
+<tr><td>/admin</td><td>Dashboard admin</td><td>Admin</td></tr>
+<tr><td>/admin/iklan</td><td>Verifikasi iklan</td><td>Admin</td></tr>
+<tr><td>/admin/user</td><td>Kelola user</td><td>Admin</td></tr>
+</table>
+<h3>5.2 Antarmuka Perangkat Lunak</h3>
+<ul><li>Basis data: PostgreSQL (kontainer Docker)</li><li>ORM: Prisma</li><li>Runtime: Node.js + Express dengan template engine EJS</li></ul>
+<h3>5.3 Antarmuka Komunikasi</h3>
+<ul><li>Protokol HTTP melalui jaringan lokal/host (localhost)</li><li>Format data antar lapisan: HTML (render server) dan JSON (untuk operasi AJAX sederhana bila diperlukan)</li></ul>
+<h3>5.4 Antarmuka Perangkat Keras</h3>
+<ul><li>Komputer/laptop standar dengan browser modern; tidak memerlukan perangkat khusus</li></ul>
+<hr>
+<h2>6. Model Analisis</h2>
+<h3>6.1 Use Case Diagram</h3>
+<p>Diagram berikut menggambarkan seluruh interaksi antara aktor (User dan Admin) dengan fungsi-fungsi yang disediakan sistem Los Santos Automotive.</p>
+<p><strong>Daftar use case:</strong></p>
+<table>
+<tr><th>Kode</th><th>Nama Use Case</th><th>Aktor</th></tr>
+<tr><td>SK-01</td><td>Daftar Akun</td><td>User</td></tr>
+<tr><td>SK-02</td><td>Login / Logout</td><td>User, Admin</td></tr>
+<tr><td>SK-03</td><td>Lihat Katalog Mobil</td><td>User</td></tr>
+<tr><td>SK-04</td><td>Cari &amp; Filter Mobil</td><td>User</td></tr>
+<tr><td>SK-05</td><td>Lihat Detail Mobil</td><td>User</td></tr>
+<tr><td>SK-06</td><td>Kelola Keranjang</td><td>User</td></tr>
+<tr><td>SK-07</td><td>Checkout</td><td>User</td></tr>
+<tr><td>SK-08</td><td>Pembayaran Simulasi</td><td>User</td></tr>
+<tr><td>SK-09</td><td>Lihat &amp; Cetak Struk</td><td>User</td></tr>
+<tr><td>SK-10</td><td>Pasang Iklan Mobil</td><td>User</td></tr>
+<tr><td>SK-11</td><td>Kelola Iklan Saya</td><td>User</td></tr>
+<tr><td>SK-12</td><td>Lihat Pesanan Masuk</td><td>User</td></tr>
+<tr><td>SK-13</td><td>Kelola Profil</td><td>User</td></tr>
+<tr><td>SK-14</td><td>Verifikasi Iklan</td><td>Admin</td></tr>
+<tr><td>SK-15</td><td>Kelola User</td><td>Admin</td></tr>
+</table>
+<img src="img/use-case.png" alt="Use Case Diagram Los Santos Automotive">
+<p><em>Sumber diagram: <code>img/use-case.puml</code></em></p>
+<h3>6.2 Skenario Use Case Utama — Checkout &amp; Pembayaran (SK-07, SK-08, SK-09)</h3>
+<table>
+<tr><th>Bagian</th><th>Keterangan</th></tr>
+<tr><td>Nama use case</td><td>Checkout &amp; Pembayaran</td></tr>
+<tr><td>Aktor</td><td>User (pembeli)</td></tr>
+<tr><td>Pra-kondisi</td><td>User sudah login dan keranjang berisi minimal satu mobil</td></tr>
+<tr><td>Alur utama</td><td>1. User membuka halaman keranjang; 2. User menekan tombol Checkout; 3. Sistem menampilkan ringkasan item dan total; 4. User memasukkan jumlah uang bayar; 5. Sistem menghitung kembalian; 6. User menekan tombol Bayar; 7. Sistem menyimpan transaksi dan menampilkan struk; 8. User mencetak/mengunduh struk</td></tr>
+<tr><td>Alur alternatif</td><td>4a. Uang bayar kurang dari total — sistem menolak dan menampilkan pesan; 1a. Keranjang kosong — tombol checkout dinonaktifkan</td></tr>
+<tr><td>Pasca-kondisi</td><td>Transaksi tersimpan, isi keranjang dibersihkan, struk dapat dicetak</td></tr>
+</table>
+<h3>6.3 Skenario Use Case Utama — Verifikasi Iklan (SK-14)</h3>
+<table>
+<tr><th>Bagian</th><th>Keterangan</th></tr>
+<tr><td>Nama use case</td><td>Verifikasi Iklan</td></tr>
+<tr><td>Aktor</td><td>Admin</td></tr>
+<tr><td>Pra-kondisi</td><td>Admin sudah login; terdapat iklan berstatus &quot;menunggu verifikasi&quot;</td></tr>
+<tr><td>Alur utama</td><td>1. Admin membuka daftar iklan pending; 2. Admin memeriksa data iklan; 3. Admin menekan Setujui; 4. Sistem mengubah status iklan sehingga tampil di katalog</td></tr>
+<tr><td>Alur alternatif</td><td>3a. Admin menolak iklan — status menjadi &quot;ditolak&quot; dan tidak tampil di katalog</td></tr>
+<tr><td>Pasca-kondisi</td><td>Status iklan diperbarui</td></tr>
+</table>
+<h3>6.4 Entity Relationship Diagram (ERD)</h3>
+<p>Diagram berikut menggambarkan struktur basis data beserta relasi antar tabel yang digunakan oleh aplikasi.</p>
+<img src="img/erd.png" alt="ERD Los Santos Automotive">
+<p><em>Sumber diagram: <code>img/erd.mmd</code></em></p>
+<table>
+<tr><th>Entitas</th><th>Deskripsi</th><th>Atribut Utama</th></tr>
+<tr><td>User</td><td>Akun pengguna (user &amp; admin)</td><td>id_user, nama, email, password, role</td></tr>
+<tr><td>Mobil</td><td>Data mobil yang diiklankan</td><td>id_mobil, kode_mobil, merek, model, tahun, harga, deskripsi, foto, status_verifikasi, id_penjual</td></tr>
+<tr><td>Keranjang</td><td>Item mobil pilihan user sebelum checkout</td><td>id_keranjang, id_user, id_mobil, qty</td></tr>
+<tr><td>Transaksi</td><td>Kepala transaksi pembelian</td><td>id_transaksi, id_user, tanggal, total, uang_bayar, kembalian</td></tr>
+<tr><td>Detail_Transaksi</td><td>Rincian mobil per transaksi</td><td>id_detail, id_transaksi, id_mobil, qty, harga_satuan, subtotal</td></tr>
+</table>
+<h3>6.5 Kamus Data</h3>
+<p><strong>Tabel: user</strong></p>
+<table>
+<tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+<tr><td>id_user</td><td>SERIAL (PK)</td><td>ID unik pengguna (auto increment)</td></tr>
+<tr><td>nama</td><td>VARCHAR(100)</td><td>Nama lengkap pengguna</td></tr>
+<tr><td>email</td><td>VARCHAR(100), UNIQUE</td><td>Email untuk login — harus unik</td></tr>
+<tr><td>password</td><td>VARCHAR(255)</td><td>Password dalam bentuk hash (bcrypt)</td></tr>
+<tr><td>role</td><td>VARCHAR(10)</td><td>Peran pengguna: &quot;user&quot; atau &quot;admin&quot;</td></tr>
+</table>
+<p><strong>Tabel: mobil</strong></p>
+<table>
+<tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+<tr><td>id_mobil</td><td>SERIAL (PK)</td><td>ID unik mobil</td></tr>
+<tr><td>kode_mobil</td><td>VARCHAR(20), UNIQUE</td><td>Kode unik mobil — dipakai saat menambah ke keranjang</td></tr>
+<tr><td>merek</td><td>VARCHAR(50)</td><td>Merek mobil (contoh: Toyota, Honda)</td></tr>
+<tr><td>model</td><td>VARCHAR(50)</td><td>Model/tipe mobil</td></tr>
+<tr><td>tahun</td><td>INT</td><td>Tahun produksi</td></tr>
+<tr><td>harga</td><td>NUMERIC(12,2)</td><td>Harga jual (Rupiah)</td></tr>
+<tr><td>deskripsi</td><td>TEXT</td><td>Deskripsi kondisi dan spesifikasi</td></tr>
+<tr><td>foto</td><td>VARCHAR(255)</td><td>Nama file foto utama</td></tr>
+<tr><td>status_verifikasi</td><td>VARCHAR(15)</td><td>&quot;pending&quot;, &quot;disetujui&quot;, atau &quot;ditolak&quot;</td></tr>
+<tr><td>id_penjual</td><td>INT (FK → user.id_user)</td><td>Penjual yang memasang iklan</td></tr>
+</table>
+<p><strong>Tabel: keranjang</strong></p>
+<table>
+<tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+<tr><td>id_keranjang</td><td>SERIAL (PK)</td><td>ID unik baris keranjang</td></tr>
+<tr><td>id_user</td><td>INT (FK → user.id_user)</td><td>Pemilik keranjang</td></tr>
+<tr><td>id_mobil</td><td>INT (FK → mobil.id_mobil)</td><td>Mobil yang dipilih</td></tr>
+<tr><td>qty</td><td>INT</td><td>Jumlah unit (umumnya 1)</td></tr>
+</table>
+<p><strong>Tabel: transaksi</strong></p>
+<table>
+<tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+<tr><td>id_transaksi</td><td>SERIAL (PK)</td><td>ID unik transaksi</td></tr>
+<tr><td>id_user</td><td>INT (FK → user.id_user)</td><td>Pembeli</td></tr>
+<tr><td>tanggal</td><td>TIMESTAMP</td><td>Waktu transaksi dibuat</td></tr>
+<tr><td>total</td><td>NUMERIC(14,2)</td><td>Total nilai transaksi</td></tr>
+<tr><td>uang_bayar</td><td>NUMERIC(14,2)</td><td>Jumlah uang yang dibayarkan pembeli</td></tr>
+<tr><td>kembalian</td><td>NUMERIC(14,2)</td><td>uang_bayar − total</td></tr>
+</table>
+<p><strong>Tabel: detail_transaksi</strong></p>
+<table>
+<tr><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr>
+<tr><td>id_detail</td><td>SERIAL (PK)</td><td>ID unik rincian</td></tr>
+<tr><td>id_transaksi</td><td>INT (FK → transaksi.id_transaksi)</td><td>Transaksi induk</td></tr>
+<tr><td>id_mobil</td><td>INT (FK → mobil.id_mobil)</td><td>Mobil yang dibeli</td></tr>
+<tr><td>qty</td><td>INT</td><td>Jumlah unit</td></tr>
+<tr><td>harga_satuan</td><td>NUMERIC(12,2)</td><td>Harga saat transaksi (snapshot)</td></tr>
+<tr><td>subtotal</td><td>NUMERIC(14,2)</td><td>qty × harga_satuan</td></tr>
+</table>
+<p><strong>Relasi antar tabel:</strong></p>
+<ul><li>Satu <strong>user</strong> dapat menjual banyak <strong>mobil</strong> (1 : N)</li><li>Satu <strong>user</strong> memiliki banyak baris <strong>keranjang</strong> (1 : N)</li><li>Satu <strong>user</strong> melakukan banyak <strong>transaksi</strong> (1 : N)</li><li>Satu <strong>transaksi</strong> memiliki satu atau lebih <strong>detail_transaksi</strong> (1 : N)</li></ul>
+<hr>
+<h2>7. Catatan Versi</h2>
+<table>
+<tr><th>Versi</th><th>Tanggal</th><th>Perubahan</th></tr>
+<tr><td>1.0 (draft)</td><td>26 Sep 2026</td><td>Draft awal: pendahuluan, deskripsi umum, kebutuhan fungsional &amp; non-fungsional, antarmuka, model analisis</td></tr>
+</table>
+<blockquote><strong>Catatan draft:</strong> silakan koreksi bagian yang perlu (nama fitur, prioritas, skenario) sebelum diserahkan pada responsi.</blockquote>
+</body></html>
